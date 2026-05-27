@@ -1,0 +1,62 @@
+{
+  "name": "ternary-converter",
+  "displayName": "平衡三进制转换器与计算器",
+  "description": "平衡三进制 ↔ 十进制转换器，支持任意精度；内置交互式计算器",
+  "version": "1.0.0",
+  "publisher": "lbylzk",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "ternary.convertToTernary",
+        "title": "Ternary: 十进制 → 平衡三进制"
+      },
+      {
+        "command": "ternary.convertToDecimal",
+        "title": "Ternary: 平衡三进制 → 十进制"
+      },
+      {
+        "command": "ternary.convertSelection",
+        "title": "Ternary: 转换选中内容（自动识别方向）"
+      },
+      {
+        "command": "ternary.openCalculator",
+        "title": "Ternary: 打开计算器"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "ternary.convertSelection",
+          "when": "editorHasSelection",
+          "group": "ternary"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "ternary.convertSelection",
+        "key": "ctrl+shift+t",
+        "when": "editorHasSelection"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.0.0"
+  }
+}
