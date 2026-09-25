@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三进制为何更契合具身智能 —— 排版预览</title>
+<style>
+  :root { --fs: 17px; --paperw: 820px; }
+
+  html { background: #e9ecef; }
+
+  body {
+    margin: 0;
+    padding: 28px 16px 72px;
+    font-family: "Times New Roman", "SimSun", "Songti SC", "Noto Serif CJK SC", serif;
+    color: #1a1a1a;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- 工具栏（打印时隐藏） ---------- */
+  .toolbar {
+    width: min(var(--paperw), 100%);
+    margin: 0 auto 14px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 9px 14px;
+    background: rgba(255,255,255,.94);
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    font-family: system-ui, "Segoe UI", "Microsoft YaHei", sans-serif;
+    font-size: 13px;
+    color: #495057;
+  }
+  .toolbar button {
+    font: inherit;
+    padding: 5px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background: #fff;
+    color: #212529;
+    cursor: pointer;
+  }
+  .toolbar button:hover { background: #f1f3f5; }
+  .toolbar button:active { transform: translateY(1px); }
+  .toolbar button.primary { background: #0d6efd; border-color: #0d6efd; color: #fff; }
+  .toolbar button.primary:hover { background: #0b5ed7; }
+  .chip {
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: #e7f5ff;
+    color: #1864ab;
+    border: 1px solid #d0ebff;
+    white-space: nowrap;
+  }
+  .hint { margin-left: auto; color: #868e96; font-size: 12px; }
+
+  /* ---------- 纸张 ---------- */
+  .paper {
+    width: min(var(--paperw), 100%);
+    margin: 0 auto;
+    background: #fff;
+    padding: 60px 68px 76px;
+    box-shadow: 0 2px 20px rgba(0,0,0,.12);
+    font-size: var(--fs);
+  }
+
+  /* ---------- 题名区 ---------- */
+  h1.title {
+    font-family: "SimHei", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    font-size: 1.62em;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: .02em;
+    line-height: 1.45;
+    margin: 0 0 .28em;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: .96em;
+    color: #343a40;
+    margin: 0 0 .9em;
+    text-indent: 0;
+  }
+  .author {
+    text-align: center;
+    font-size: .88em;
+    color: #6c757d;
+    margin: 0;
+    text-indent: 0;
+  }
+  .rule {
+    border: 0;
+    border-top: 1px solid #ced4da;
+    margin: 1.6em 0 0;
+  }
+
+  /* ---------- 正文 ---------- */
+  h2 {
+    font-family: "SimHei", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    font-size: 1.04em;
+    font-weight: 700;
+    margin: 1.85em 0 .7em;
+    line-height: 1.5;
+  }
+  p {
+    margin: 0 0 .5em;
+    text-indent: 2em;
+    text-align: justify;
+    line-height: 1.85;
+    word-break: break-word;
+  }
+  /* 拉丁字母与算符走 Times，中文走宋体，接近刊物排版效果 */
+  .m { font-style: normal; }
+
+  /* ---------- 打印 ---------- */
+  @media print {
+    html { background: #fff; }
+    body { padding: 0; }
+    .toolbar { display: none !important; }
+    .paper {
+      --fs: 10.5pt !important;   /* 五号 */
+      width: auto;
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+    }
+    @page { size: A4; margin: 2.4cm 2.8cm; }
+    h2 { break-after: avoid; page-break-after: avoid; }
+    p { orphans: 2; widows: 2; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button id="smaller" title="缩小字号">A−</button>
+  <button id="larger" title="放大字号">A+</button>
+  <button id="print" class="primary">打印 / 导出 PDF</button>
+  <span class="chip">正文 1780 字（中文字符）</span>
+  <span class="chip">无表格 · 无代码</span>
+  <span class="hint">打印时自动切换为 A4 页面与宋体五号</span>
+</div>
+
+<article class="paper">
+
+  <h1 class="title">三进制为何更契合具身智能</h1>
+  <p class="subtitle">——从“效率工具”到“表示同构”</p>
+  <p class="author">徐可豪</p>
+  <hr class="rule">
+
+  <h2>一、被误置的瓶颈</h2>
+
+  <p>三进制的合理性在数学与工程上都有基础：按“基数×位数”度量，最优基数是 <span class="m">e≈2.718</span>，整数中 3 最接近它；平衡三进制以 <span class="m">−1、0、+1</span> 三个数码表示数值，无需符号位，加减法统一，舍入关于零点对称。1958 年的 Setun 计算机验证了其可行性，2024 年微软的 BitNet b1.58 则以 1.58 比特量化让它重返视野。</p>
+
+  <p>然而这些论证几乎都落在“效率”上：消除乘法、压缩带宽、节省显存。当视角转向具身智能，这个立足点需要重新审视。语言模型的瓶颈确实是算力，而具身智能的瓶颈是建模：机器人要在部分可观测、接触丰富、非光滑的物理世界里，建立可预测、可规划、可安全执行的内部模型。机载算力预算只有瓦特级，但状态空间的复杂度不会因此下降。</p>
+
+  <p>换言之，三进制之于具身智能，可能不是“更省”，而是“更贴合”——它的数码集与具身智能中几类关键数学结构存在同构关系。</p>
+
+  <h2>二、建模难点中的三处“符号敏感”</h2>
+
+  <p>其一是非光滑动力学。真实机器人的动力学在接触瞬间是不连续的：库仑摩擦力是 <span class="m">F = −μN·sign(v)</span>，滑模控制律是 <span class="m">u = −k·sign(σ)</span>，继电器、死区、滞环等基本非线性归一化后也以此为码域，而 sign 的输出恰好是 <span class="m">−1、0、+1</span> 三个值。接触丰富操作是具身智能公认的难点，其本质困难正是非光滑性：黏滞与滑动之间的切换使梯度不存在。零在这里不是“没有信息”，而是最重要的信息，因为它代表黏滞态。</p>
+
+  <p>其二是部分可观测与“未知”。在部分可观测框架下，智能体必须区分三种认识态：确认成立、确认不成立、未知。对“前方无障碍”“夹爪已夹稳”这类安全谓词而言，第三种状态既不能归入安全也不能归入不安全，必须有独立的保守回退语义。工程实践其实已独立地重新发明了三值表示：ROS/Nav2 的代价地图、OctoMap 的占据栅格都采用三态。可见“未知必须作为一等值存在”已被广泛承认，缺的是与之匹配的原生代数。</p>
+
+  <p>其三是长时程一致性。世界模型的想象 rollout 是多步迭代的：若每步量化误差均值为 <span class="m">μ</span>、标准差为 <span class="m">σ</span>，则 <span class="m">T</span> 步后累积误差的期望为 <span class="m">Tμ</span>、标准差为 <span class="m">σ√T</span>，两者主导权的交叉点在 <span class="m">T ≈ (σ/μ)²</span>。以典型量化场景估算，这个阈值只有约 4 步，而具身世界模型的 rollout 通常长达 10 至 1000 步。可见长时程预测的主要敌人不是量化误差的方差，而是它的有偏性。</p>
+
+  <h2>三、三进制的三重契合</h2>
+
+  <p>就非光滑动力学而言，sign 函数的码域就是平衡三进制的数码集——这不是效率上的巧合，而是结构同构。在平衡三进制中提取符号只需读取最高非零位，无需比较与分支；补码则需检查最高位、判定零值再作符号解释。更关键的是，三种输出对应三种明确的物理状态：<span class="m">+1</span> 正向滑动、<span class="m">0</span> 黏滞、<span class="m">−1</span> 负向滑动，零点因此是接触动力学的核心分支，而非值域中一个普通点。此外还有一个附带的统一性：三值神经网络的量化算子同样是 sign 加阈值门控，于是控制器中的非光滑非线性与网络中的量化非线性成为同一个算子。</p>
+
+  <p>就部分可观测性而言，平衡三进制与 Kleene 强三值逻辑同构：把 <span class="m">1</span> 读作“真”、<span class="m">−1</span> 读作“假”、<span class="m">0</span> 读作“未知”，该逻辑在“与”“或”“非”下封闭，构成 De Morgan 代数，“未知”参与运算后仍是合法值，无需外挂掩码规则。相比之下，二进制必须用“值加有效位”的对表示未知：位宽翻倍，代数不闭合，且掩码在算子融合、量化、缓存复用中容易被丢弃，使“未知”被静默降级为“空闲”——这正是安全关键系统中的一类经典失效模式。</p>
+
+  <p>就长时程一致性而言，平衡三进制关于零点对称，向零截断即舍入到最近，期望偏差为零；补码截断则系统性偏向负无穷，偏差恒为负的半个最低有效位。代回上一节的交叉公式，偏差项消失，累积误差由线性漂移退化为随机游走，在千步 rollout 上是量级差异。</p>
+
+  <p>这三重契合之外，还有一条物理层契合独立成立：事件相机的输出本身就是 <span class="m">+1、−1</span> 极性事件加无事件的三态，是字面意义上的三进制流，且不依赖任何学习算法。</p>
+
+  <h2>四、落地不必等待重造计算栈</h2>
+
+  <p>三进制的价值兑现不需要等待重新设计整个计算栈。近期即可在现有二进制芯片上做三值量化：把视觉—语言—动作模型的动作头与价值头三值化，对优势函数和时序差分误差采用对称量化，把占据栅格与安全谓词改为单三进制位编码，而路由层与安全环保持全精度。中期机会主要来自新兴器件而非主流 CMOS，其中“事件相机加神经形态”与具身场景适配性最强。远期才是原生三进制指令集架构，其血统虽可追溯至 Setun，却从未获得现代工艺节点的工程验证。</p>
+
+  <h2>五、总结</h2>
+
+  <p>本文不主张三进制能提升样本效率，也不主张它能弥合仿真到现实的差距——这些问题与数值表示基本正交。本文的主张是：具身智能中存在三类对符号高度敏感的建模结构，而平衡三进制的数码集与这三类结构同构。</p>
+
+  <p>这一判断可以被证伪。可设计三组对照：在长时程 rollout 中比较对称与非对称量化的漂移增长阶；在遮挡与传感器失效下比较“未知一等值化”与掩码方案的安全违规率；在插孔、抓取等接触任务中比较原生死区与人工死区的控制颤振。关键消融在于区分“三值量化”与“原生三进制”——若前者已达后者的效果，则优势仅来自实现效率，本文的强主张即被推翻。</p>
+
+  <p>若该判断成立，其意义在于重新定位三进制的价值：它不只是一个更省钱的数字系统，而是一个与具身智能数学结构更贴合的数字系统。在语言模型领域，三进制化是一次工程优化；在具身智能领域，它可能是一次表示层的重新对齐。</p>
+
+</article>
+
+<script>
+  (function () {
+    var paper = document.querySelector('.paper');
+    var fs = 17;
+    var apply = function () { paper.style.setProperty('--fs', fs + 'px'); };
+    document.getElementById('larger').addEventListener('click', function () {
+      fs = Math.min(fs + 1, 26); apply();
+    });
+    document.getElementById('smaller').addEventListener('click', function () {
+      fs = Math.max(fs - 1, 12); apply();
+    });
+    document.getElementById('print').addEventListener('click', function () {
+      window.print();
+    });
+  })();
+</script>
+
+</body>
+</html>
